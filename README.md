@@ -1,2 +1,3 @@
 # SF-Tools
-## sfcheck.py - commandline tool to get response time, version, and state of a dedicated server
+## sfcheck.py
+A commandline tool to get response time, version, and state of a dedicated server.
