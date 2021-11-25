@@ -35,9 +35,9 @@ def probeServer( address = 'test.example.com', port = 15777 ):
 
 def main( address, port ):
     response = probeServer( address, port )
-    print( f'\tResponse Time\t{ response[ 2 ] * 1000:04.2f }msec' )
-    print( f'\tServer Status:\t{ serverStates[ response[ 0 ] ] }' )
-    print( f'\tServer Version\t{ int.from_bytes( response[1], "little" ) }' )
+    print( f'\tResponse Time\t{response[ 2 ] * 1000:04.2f}msec' )
+    print( f'\tServer Status:\t{serverStates[ response[ 0 ] ]}' )
+    print( f'\tServer Version\t{int.from_bytes( response[1], "little" )}' )
     return None
 
 if __name__ == '__main__':
