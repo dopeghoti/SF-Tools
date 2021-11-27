@@ -1,6 +1,5 @@
-import socket, sys
+import argparse, socket, sys
 from time import time
-import argparse
 
 serverStates = {
     1: 'Idle',
@@ -34,14 +33,15 @@ def probeServer( address = 'test.example.com', port = 15777 ):
     
     return( ( rspState, rspVer, time_recv - time_sent ) )
 
-def main( address, port, cMode ):
+def main( address, port, verbose ):
     response = probeServer( address, port )
     responseTime = response[2]*1000
     serverState = serverStates[response[0]]
+    serverStateCode = response[0]
     serverVersion = int.from_bytes( response[1], "little" )
 
-    if cMode == True:
-        print( f'{responseTime:04.2f},{serverState},{serverVersion}')
+    if not verbose:
+        print( f'{responseTime:04.2f},{serverStateCode},{serverVersion}')
     else:
         print( f'\tResponse Time\t{responseTime:04.2f}msec' )
         print( f'\tServer Status:\t{serverState}' )
@@ -54,20 +54,20 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     
-    parser.add_argument("ipAddress", help="Server IP Address or hostname to check status")
-    parser.add_argument("-p", "--port", help="Server port to check status", default=15777, type=int)
-    parser.add_argument("-c", "--commaMode", help="Comma delimited output in form of - Response Time, Serer State, Server Version", action="store_true")
+    parser.add_argument("ipAddress", help="Server IP Address or hostname to probe")
+    parser.add_argument("-p", "--port", help="Server port to check status.  Defaults to 15777.", default=15777, type=int)
+    parser.add_argument("-v", "--verbose", help="Use more verbose, human-readable output format.", action="store_true")
     
     args = parser.parse_args()
     host = args.ipAddress
     port = args.port
-    cMode = args.commaMode
+    verbose = args.verbose
 
     if (host and port):
         proceed = True
     
     if (proceed == True):
-        main(host, port, cMode)
+        main(host, port, verbose)
 
     else:
         print( f'Please invoke {sys.argv[0]} with a host to probe, followed optionally by a port.' )
