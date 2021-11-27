@@ -5,10 +5,11 @@ A commandline tool to get response time, version, and state of a dedicated serve
 ## Server States
 The current implementation of the query protocol will return one of three possible server states, as a "state code".  In vervose mode, this is translated to simple words (e. g. `Live`), but in CSV or Compact mode (the default), the state code itself is provided in the output.  The possible state codes are:
 
-| 1 | Idle            |
-|---|-----------------|
-| 2 | Preparing World |
-| 3 | Live            |
+| State Code | Server Status   |
+|------------|-----------------|
+| 1          | Idle            |
+| 2          | Preparing World |
+| 3          | Live            |
 
 ## How to run
 Clone the repository or download the sfcheck.py file, then run the `sfcheck.py` script using Python. Ensure to provide at the very least an IP address or hostname of the game server, the port will default to `15777` if not provided.
