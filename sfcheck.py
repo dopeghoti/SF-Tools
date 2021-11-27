@@ -1,5 +1,6 @@
 import socket, sys
 from time import time
+import argparse
 
 serverStates = {
     1: 'Idle',
@@ -33,24 +34,40 @@ def probeServer( address = 'test.example.com', port = 15777 ):
     
     return( ( rspState, rspVer, time_recv - time_sent ) )
 
-def main( address, port ):
+def main( address, port, cMode ):
     response = probeServer( address, port )
-    print( f'\tResponse Time\t{response[ 2 ] * 1000:04.2f}msec' )
-    print( f'\tServer Status:\t{serverStates[ response[ 0 ] ]}' )
-    print( f'\tServer Version\t{int.from_bytes( response[1], "little" )}' )
+    responseTime = response[2]*1000
+    serverState = serverStates[response[0]]
+    serverVersion = int.from_bytes( response[1], "little" )
+
+    if cMode == True:
+        print( f'{responseTime:04.2f},{serverState},{serverVersion}')
+    else:
+        print( f'\tResponse Time\t{responseTime:04.2f}msec' )
+        print( f'\tServer Status:\t{serverState}' )
+        print( f'\tServer Version\t{serverVersion}' )
+    
     return None
 
 if __name__ == '__main__':
     proceed=False
-    if len( sys.argv ) == 3:
-        host = sys.argv[ 1 ]
-        port = sys.argv[ 2 ]
+
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument("ipAddress", help="Server IP Address or hostname to check status")
+    parser.add_argument("-p", "--port", help="Server port to check status", default=15777, type=int)
+    parser.add_argument("-c", "--commaMode", help="Comma delimited output in form of - Response Time, Serer State, Server Version", action="store_true")
+    
+    args = parser.parse_args()
+    host = args.ipAddress
+    port = args.port
+    cMode = args.commaMode
+
+    if (host and port):
         proceed = True
-    elif len( sys.argv ) == 2:
-        host = sys.argv[ 1 ]
-        port = 15777
-        proceed = True
-    if proceed:
-        main( host, port )
+    
+    if (proceed == True):
+        main(host, port, cMode)
+
     else:
         print( f'Please invoke {sys.argv[0]} with a host to probe, followed optionally by a port.' )
