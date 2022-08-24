@@ -13,4 +13,4 @@ Response:
 - 4 bytes server version
 - 2 bytes beacon port
 
-Only message ID 0 (server state) is currently known.
+Only message IDs 0 (server state query) and 1 (server state reply) are currently known.
