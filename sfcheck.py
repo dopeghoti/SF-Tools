@@ -17,16 +17,15 @@ def probeServer( address = 'test.example.com', port = 15777 ):
     srvPort = int( port )
     bufferSize = 1024
     
-    UDPClientSocket = socket.socket( family=socket.AF_INET, type=socket.SOCK_DGRAM )
     time_sent = time.perf_counter()
-    UDPClientSocket.sendto( msgID + msgProtocol + msgData, ( srvAddress, srvPort ) )
-    UDPClientSocket.settimeout( 5 )
-    try:
-        msgFromServer = UDPClientSocket.recvfrom( bufferSize )
-    except socket.timeout:
-        print( f'Connection timed out.' )
-        exit( 1 )
-    UDPClientSocket.close()
+    with socket.socket( family=socket.AF_INET, type=socket.SOCK_DGRAM ) as UDPClientSocket:
+        UDPClientSocket.sendto( msgID + msgProtocol + msgData, ( srvAddress, srvPort ) )
+        UDPClientSocket.settimeout( 5 )
+        try:
+            msgFromServer = UDPClientSocket.recvfrom( bufferSize )
+        except socket.timeout:
+            print( f'Connection timed out.' )
+            exit( 1 )
     time_recv = time.perf_counter()
     response = msgFromServer[ 0 ]
     rspState = response[ 10 ]
