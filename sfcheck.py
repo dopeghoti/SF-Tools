@@ -1,6 +1,6 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 import argparse, socket, sys
-from time import time
+import time
 
 serverStates = {
     1: 'Idle',
@@ -18,7 +18,7 @@ def probeServer( address = 'test.example.com', port = 15777 ):
     bufferSize = 1024
     
     UDPClientSocket = socket.socket( family=socket.AF_INET, type=socket.SOCK_DGRAM )
-    time_sent = time()
+    time_sent = time.perf_counter()
     UDPClientSocket.sendto( msgID + msgProtocol + msgData, ( srvAddress, srvPort ) )
     UDPClientSocket.settimeout( 5 )
     try:
@@ -27,7 +27,7 @@ def probeServer( address = 'test.example.com', port = 15777 ):
         print( f'Connection timed out.' )
         exit( 1 )
     UDPClientSocket.close()
-    time_recv = time()
+    time_recv = time.perf_counter()
     response = msgFromServer[ 0 ]
     rspState = response[ 10 ]
     rspVer=response[ 11:15 ]
