@@ -28,6 +28,7 @@ optional arguments:
 ```
 ```bash
 > $ python sfcheck.py 192.168.10.25 -v
+        Server Name     My Very Satisfactory Server
         Response Time   1.54msec
         Server Status:  Live
         Server Version  174005
@@ -35,6 +36,7 @@ optional arguments:
 
 ```bash
 > $ python sfcheck.py 192.168.10.25 -p 15777 -v
+        Server Name     My Very Satisfactory Server
         Response Time   1.54msec
         Server Status:  Live
         Server Version  174005
