@@ -34,13 +34,13 @@ optional arguments:
 ```
 
 ```bash
-> $ python sfcheck.py 192.168.10.25 -p 15777 -v
+> $ python sfcheck.py 192.168.10.25 -p 7777 -v
         Response Time   1.54msec
         Server Status:  Live
         Server Version  174005
 ```
 
 ```bash
-> $ python sfcheck.py 192.168.10.25 -p 15777
+> $ python sfcheck.py 192.168.10.25 -p 7777
 26.55,3,174005
 ```
