@@ -110,9 +110,11 @@ def main( address, port, verbose ):
     serverState = serverStates[ serverData['ServerState'] ]
     serverStateCode = serverData['ServerState']
     serverVersion = serverData['ServerNetCL']
+    serverName = serverData['ServerName']
     if not verbose:
         print( f'{responseTime:04.2f},{serverStateCode},{serverVersion}')
     else:
+        print( f'\tServer Name\t{serverName}' )
         print( f'\tResponse Time\t{responseTime:04.2f}msec' )
         print( f'\tServer Status:\t{serverState}' )
         print( f'\tServer Version\t{serverVersion}' )
