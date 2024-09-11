@@ -1,3 +1,7 @@
+The following are for the Dedicated server only *prior to* the 1.0 release.  The API documentation is included with
+the Satisfactory game client.  As such, because it is tied to a Satisfactory purchase, I will not include it verbatim here
+without permission from Coffee Stain.
+
 The following is the only known details about how to converse with the Dedicated Server query port (by default, UDP/15777):
 
 Request: 
