@@ -3,6 +3,10 @@ import argparse, socket, sys
 import time
 import numpy as np
 import struct
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+currentRESTAPIVersion = 1
 
 messageTypes = {
     'PollServerState':      0,
@@ -37,7 +41,7 @@ serverFlags = {
 
 protocolVersion = 1         # The current protocol version
 
-def probeServer( address = 'test.example.com', port = 7777 ):
+def probeLightAPI( address = 'test.example.com', port = 7777 ):
     msgID       = bytes.fromhex( 'D5F6' )                       # Protocol Magic identifying the UDP Protocol
     msgType     = np.uint8(messageTypes['PollServerState'])     # Identifier for 'Poll Server State' message
     msgProtocol = np.uint8(protocolVersion)                     # Identifier for protocol version identification
@@ -62,9 +66,9 @@ def probeServer( address = 'test.example.com', port = 7777 ):
     time_recv = time.perf_counter()
     return msgFromServer[0], time_recv - time_sent
 
-def parseResponse( data = None ):
+def parseLightAPIResponse( data = None ):
     if not data:
-        raise ValueError( 'parseResponse() called with empty response.' )
+        raise ValueError( 'parseLightAPIResponse() called with empty response.' )
     # Validate the envelope
     validFingerprint = (b'\xd5\xf6', messageTypes['ServerStateResponse'], protocolVersion )
     packetFingerprint = struct.unpack( '<2s B B', data[:4])
@@ -101,23 +105,54 @@ def parseResponse( data = None ):
     response['ServerName'] = raw_name.decode('utf-8')
     return response
 
+def probeRESTAPI( address = 'test.example.com', port = 7777 ):
+    try:
+        # We don't care that we're almost definitely hitting a self-signed certificate
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        time_sent = time.perf_counter()
+        http_response = requests.post (
+                f'https://{address}:{port}/api/v{currentRESTAPIVersion}',
+                headers = { "Content-Type": "application/json" },
+                json = {
+                    "function": "HealthCheck",
+                    "data": {
+                        "ClientCustomData": ""
+                    }
+                },
+                verify = False
+        )
+        api_response = http_response.json()['data']
+        time_recv = time.perf_counter()
+        transit_time = time_recv - time_sent
+        api_response['tx_time'] = transit_time
+        return api_response
+    except requests.exceptions.RequestException as e:
+        print( f'Error accessing REST API: {e}' )
 
 def main( address, port, verbose ):
-    response = probeServer( address, port )
-    responseTime = response[1]*1000
-    serverData = parseResponse( response[0] )
-    # Turn encoded responde data into usable output
+    UDP_response = probeLightAPI( address, port )
+    responseTime = { 'UDP': UDP_response[1]*1000 }
+    serverData = parseLightAPIResponse( UDP_response[0] )
+    # Turn encoded response data into usable output
     serverState = serverStates[ serverData['ServerState'] ]
     serverStateCode = serverData['ServerState']
     serverVersion = serverData['ServerNetCL']
     serverName = serverData['ServerName']
+    TCP_response = probeRESTAPI( address, port )
+    serverHealth = TCP_response['health']
+    responseTime['TCP'] = TCP_response['tx_time']*1000
+
+
+
     if not verbose:
-        print( f'{responseTime:04.2f},{serverStateCode},{serverVersion}')
+        print( f'{responseTime["UDP"]:04.2f},{serverStateCode},{serverVersion}')
     else:
-        print( f'\tServer Name\t{serverName}' )
-        print( f'\tResponse Time\t{responseTime:04.2f}msec' )
-        print( f'\tServer Status:\t{serverState}' )
-        print( f'\tServer Version\t{serverVersion}' )
+        print( f'\tServer Name\t\t{serverName}' )
+        print( f'\tUDP Response Time\t{responseTime["UDP"]:04.2f}msec' )
+        print( f'\tTCP Response Time\t{responseTime["TCP"]:04.2f}msec' )
+        print( f'\tServer Health:\t\t{serverHealth}' )
+        print( f'\tServer Status:\t\t{serverState}' )
+        print( f'\tServer Version\t\t{serverVersion}' )
     return None
 
 if __name__ == '__main__':
