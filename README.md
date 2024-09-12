@@ -12,7 +12,7 @@ The current implementation of the query protocol will return one of three possib
 | 3          | Live            |
 
 ## How to run
-Clone the repository or download the sfcheck.py file, then run the `sfcheck.py` script using Python. Ensure to provide at the very least an IP address or hostname of the game server, the port will default to `15777` if not provided.
+Clone the repository or download the sfcheck.py file, then run the `sfcheck.py` script using Python. Ensure to provide at the very least an IP address or hostname of the game server, the port will default to `7777` if not provided.
 
 ```bash
 > $ python sfcheck.py -h 
@@ -35,7 +35,7 @@ optional arguments:
 ```
 
 ```bash
-> $ python sfcheck.py 192.168.10.25 -p 15777 -v
+> $ python sfcheck.py 192.168.10.25 -p 7777 -v
         Server Name     My Very Satisfactory Server
         Response Time   1.54msec
         Server Status:  Live
@@ -43,6 +43,6 @@ optional arguments:
 ```
 
 ```bash
-> $ python sfcheck.py 192.168.10.25 -p 15777
+> $ python sfcheck.py 192.168.10.25 -p 7777
 26.55,3,174005
 ```
