@@ -53,3 +53,12 @@ optional arguments:
 > $ python sfcheck.py 192.168.10.25 -p 7777
 34.12,3,365306
 ```
+```bash
+> $ python sfcheck.py -v -6 xxxx:xxxx:xxx:xxxx:xxxx:xxxx:xxxx:xxx # address redacted
+        Server Name             My IPv6 Satisfactory Server
+        UDP6 Response Time      89.63msec
+        TCP6 Response Time      369.75msec
+        Server Health:          healthy
+        Server Status:          Live
+        Server Version          366202
+```

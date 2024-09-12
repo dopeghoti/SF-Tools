@@ -116,6 +116,8 @@ def parseLightAPIResponse( data = None ):
     return response
 
 def probeRESTAPI( address = 'test.example.com', port = 7777 ):
+    if ipv6:
+        address = f'[{address}]'
     try:
         # We don't care that we're almost definitely hitting a self-signed certificate
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -158,8 +160,12 @@ def main( address, port, verbose ):
         print( f'{responseTime["UDP"]:04.2f},{serverStateCode},{serverVersion}')
     else:
         print( f'\tServer Name\t\t{serverName}' )
-        print( f'\tUDP Response Time\t{responseTime["UDP"]:04.2f}msec' )
-        print( f'\tTCP Response Time\t{responseTime["TCP"]:04.2f}msec' )
+        if ipv6:
+            print( f'\tUDP6 Response Time\t{responseTime["UDP"]:04.2f}msec' )
+            print( f'\tTCP6 Response Time\t{responseTime["TCP"]:04.2f}msec' )
+        else:
+            print( f'\tUDP Response Time\t{responseTime["UDP"]:04.2f}msec' )
+            print( f'\tTCP Response Time\t{responseTime["TCP"]:04.2f}msec' )
         print( f'\tServer Health:\t\t{serverHealth}' )
         print( f'\tServer Status:\t\t{serverState}' )
         print( f'\tServer Version\t\t{serverVersion}' )
