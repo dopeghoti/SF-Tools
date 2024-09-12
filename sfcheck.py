@@ -55,14 +55,24 @@ def probeLightAPI( address = 'test.example.com', port = 7777 ):
     msgFromServer = None
 
     time_sent = time.perf_counter()
-    with socket.socket( family=socket.AF_INET, type=socket.SOCK_DGRAM ) as UDPClientSocket:
-        UDPClientSocket.sendto( msgToServer, ( srvAddress, srvPort ) )
-        UDPClientSocket.settimeout( 2 )
-        try:
-            msgFromServer = UDPClientSocket.recvfrom( bufferSize )
-        except socket.timeout:
-            print( f'Connection timed out.' )
-            exit( 1 )
+    if ipv6:
+        with socket.socket( family=socket.AF_INET6, type=socket.SOCK_DGRAM ) as UDPClientSocket:
+            UDPClientSocket.sendto( msgToServer, ( srvAddress, srvPort ) )
+            UDPClientSocket.settimeout( 2 )
+            try:
+                msgFromServer = UDPClientSocket.recvfrom( bufferSize )
+            except socket.timeout:
+                print( f'Connection timed out.' )
+                exit( 1 )
+    else:
+        with socket.socket( family=socket.AF_INET, type=socket.SOCK_DGRAM ) as UDPClientSocket:
+            UDPClientSocket.sendto( msgToServer, ( srvAddress, srvPort ) )
+            UDPClientSocket.settimeout( 2 )
+            try:
+                msgFromServer = UDPClientSocket.recvfrom( bufferSize )
+            except socket.timeout:
+                print( f'Connection timed out.' )
+                exit( 1 )
     time_recv = time.perf_counter()
     return msgFromServer[0], time_recv - time_sent
 
@@ -163,11 +173,13 @@ if __name__ == '__main__':
     parser.add_argument("ipAddress", help="Server IP Address or hostname to probe")
     parser.add_argument("-p", "--port", help="Server port to check status.  Defaults to 7777.", default=7777, type=int)
     parser.add_argument("-v", "--verbose", help="Use more verbose, human-readable output format.", action="store_true")
+    parser.add_argument("-6", "--ipv6", help="Use IPv6 for Light API endpoint", action="store_true")
 
     args = parser.parse_args()
     host = args.ipAddress
     port = args.port
     verbose = args.verbose
+    ipv6 = args.ipv6
 
     if (host and port):
         proceed = True
