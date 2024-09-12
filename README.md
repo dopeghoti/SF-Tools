@@ -14,6 +14,8 @@ The current implementation of the query protocol will return one of three possib
 ## How to run
 Clone the repository or download the sfcheck.py file, then run the `sfcheck.py` script using Python. Ensure to provide at the very least an IP address or hostname of the game server, the port will default to `7777` if not provided.
 
+Running in Verbose mode will return data from both the "Light" UDP API endpoint and the REST HTTPS API endpoint.  It will also give data for latency on both protocols.  The terse output mode will retun data only from the Light API endpoint.
+
 ```bash
 > $ python sfcheck.py -h 
 usage: sfcheck.py [-h] [-p PORT] [-c] ipAddress
@@ -30,19 +32,24 @@ optional arguments:
 > $ python sfcheck.py 192.168.10.25 -v
         Server Name     My Very Satisfactory Server
         Response Time   1.54msec
-        Server Status:  Live
-        Server Version  174005
+        UDP Response Time       34.12msec
+        TCP Response Time       202.21msec
+        Server Health:          healthy
+        Server Status:          Live
+        Server Version          365306
 ```
 
 ```bash
 > $ python sfcheck.py 192.168.10.25 -p 7777 -v
         Server Name     My Very Satisfactory Server
-        Response Time   1.54msec
-        Server Status:  Live
-        Server Version  174005
+        UDP Response Time       34.12msec
+        TCP Response Time       202.21msec
+        Server Health:          healthy
+        Server Status:          Live
+        Server Version          365306
 ```
 
 ```bash
 > $ python sfcheck.py 192.168.10.25 -p 7777
-26.55,3,174005
+34.12,3,365306
 ```
