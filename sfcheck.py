@@ -4,6 +4,7 @@ import time
 import numpy as np
 import struct
 import requests
+import ipaddress
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 currentRESTAPIVersion = 1
@@ -108,7 +109,7 @@ def parseLightAPIResponse( data = None ):
             response["SubStates"].append(sub_state)
             sub_states_offset += 3  # Adjust based on actual sub state size
     # Calculate server name offset once
-    server_name_length_offset = sub_states_offset 
+    server_name_length_offset = sub_states_offset
     server_name_offset = server_name_length_offset + 2
     response["ServerNameLength"] = struct.unpack( "<H", payload[server_name_length_offset:server_name_length_offset+2])[0]
     raw_name = struct.unpack( f'{response["ServerNameLength"]}s', payload[server_name_offset:server_name_offset + response["ServerNameLength"]] )[0]
@@ -117,7 +118,10 @@ def parseLightAPIResponse( data = None ):
 
 def probeRESTAPI( address = 'test.example.com', port = 7777 ):
     if ipv6:
-        address = f'[{address}]'
+        if hostname_provided:
+            pass
+        else:
+            address = f'[{address}]'
     try:
         # We don't care that we're almost definitely hitting a self-signed certificate
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -186,9 +190,17 @@ if __name__ == '__main__':
     port = args.port
     verbose = args.verbose
     ipv6 = args.ipv6
+    hostname_provided = None  # Use this to determine whether we were given a hostname rather than an IP address
 
     if (host and port):
         proceed = True
+
+    try:
+        host_address = ipaddress.ip_address( host )
+        hostname_provided = False # This only really matters for IPv6 addresses in the REST API
+    except ValueError:
+        hostname_provided = True # If it wasn't an IP, assume it's a hostname
+
 
     if (proceed == True):
         main(host, port, verbose)
