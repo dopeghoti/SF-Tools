@@ -1,0 +1,9 @@
+.env
+.*.swp
+../.mypy_cache/
+.mypy_cache/
+__pycache__/
+../.mypy_cache/*
+.mypy_cache/*
+__pycache__/*
+*.pyc
