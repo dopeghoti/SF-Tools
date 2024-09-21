@@ -4,20 +4,6 @@ import os
 from dotenv import load_dotenv
 from dotenv import set_key
 
-# load_dotenv( dotenv_path = './.env' )
-# try:
-#     config = {
-#             'DISCORD_TOKEN':            os.getenv( 'DISCORD_TOKEN' ),
-#             'DISCORD_GUILD':            int( str( os.getenv( 'DISCORD_GUILD' ) ) ),
-#             'DISCORD_STATUS_CHANNEL':   int( str( os.getenv( 'DISCORD_STATUS_CHANNEL' ) ) ),
-#             'SATISFACTORY_TOKEN':       os.getenv( 'SATISFACTORY_TOKEN' ),
-#             'SATISFACTORY_HOST':        os.getenv( 'SATISFACTORY_HOST' ),
-#             'SATISFACTORY_PORT':        int( str( os.getenv( 'SATISFACTORY_PORT' ) ) ),
-#             'SATISFACTORY_IPv6':        bool( os.getenv( 'SATISFACTORY_IPv6' ) )
-#             }
-# except TypeError as e:
-#     print( f'Error reading `dotenv`: {e}' )
-
 class ConfigManager():
     def __init__(self):
         self.config = {}

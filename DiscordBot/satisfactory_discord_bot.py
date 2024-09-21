@@ -1,17 +1,8 @@
 #!/usr/bin/env python3
 import discord, asyncio
 from discord.ext import tasks # type: ignore
-# from bot_config import config
 from bot_config import ConfigManager
 import satisfactory
-
-    #  config['DISCORD_TOKEN']  = os.getenv( 'DISCORD_TOKEN'   )
-    #  config['DISCORD_GUILD']  = int( os.getenv( 'DISCORD_GUILD'   ) )
-    #  config['DISCORD_STATUS_CHANNEL']   = os.getenv( 'DISCORD_STATUS_CHANNEL' )
-    #  config['SATISFACTORY_TOKEN']  = os.getenv( 'SATISFACTORY_TOKEN' )
-    #  config['SATISFACTORY_HOST']   = os.getenv( 'SATISFACTORY_HOST' )
-    #  config['SATISFACTORY_PORT']   = int( os.getenv( 'SATISFACTORY_PORT' ) )
-    #  config['SATISFACTORY_IPv6']    = bool( os.getenv( 'SATISFACTORY_IPv6' ) )
 
 heart_beats = 0
 conf = ConfigManager()
