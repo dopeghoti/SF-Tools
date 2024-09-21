@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import discord, asyncio
 from discord.ext import tasks # type: ignore
+from discord.ext import commands
 from bot_config import ConfigManager
 import satisfactory
 
@@ -46,7 +47,14 @@ async def sf_server_monitor():
 async def hello( ctx ):
     await ctx.respond( 'Hello!' )
 
+@bot.slash_command( name="shutdown", description="Shut down the Satisfactory server",  guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
+@commands.has_role( conf.get( 'DISCORD_ADMIN_ROLE' ) )
+async def shutdownsfserver( ctx ):
+    await ctx.respond( f'This is not currently implemented.', ephemeral=True, delete_after = 5.0 )
+
+
 @bot.slash_command( name="setserveraddress", description="Set the hostname or IP address of the server",  guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
+@commands.has_role( conf.get( 'DISCORD_ADMIN_ROLE' ) )
 async def setserveraddress( ctx, address ):
     if conf.set( 'SATISFACTORY_HOST', address ):
         try:
@@ -55,6 +63,7 @@ async def setserveraddress( ctx, address ):
             await ctx.respond( f'There was a problem setting the address to {address}.', ephemeral=True )
 
 @bot.slash_command( name="setserverport", description="Set the TCP/UDP port of the server", guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
+@commands.has_role( conf.get( 'DISCORD_ADMIN_ROLE' ) )
 async def setserverport( ctx, port ):
     try:
         port = int( port )

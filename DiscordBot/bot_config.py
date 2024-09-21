@@ -12,6 +12,7 @@ class ConfigManager():
             self.config['DISCORD_TOKEN']  = os.getenv( 'DISCORD_TOKEN'   )
             self.config['DISCORD_GUILD']  = int( os.getenv( 'DISCORD_GUILD'   ) )
             self.config['DISCORD_STATUS_CHANNEL']   = os.getenv( 'DISCORD_STATUS_CHANNEL' )
+            self.config['DISCORD_ADMIN_ROLE'] = int( os.getenv( 'DISCORD_ADMIN_ROLE' ) )
             self.config['SATISFACTORY_TOKEN']  = os.getenv( 'SATISFACTORY_TOKEN' )
             self.config['SATISFACTORY_HOST']   = os.getenv( 'SATISFACTORY_HOST' )
             self.config['SATISFACTORY_PORT']   = int( os.getenv( 'SATISFACTORY_PORT' ) )

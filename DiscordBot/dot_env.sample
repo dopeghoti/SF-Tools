@@ -1,6 +1,7 @@
 DISCORD_TOKEN='YourDiscordAuthenticationToken'
 DISCORD_GUILD=YourDiscordServerID
 DISCORD_STATUS_CHANNEL=channel_id_to_set
+DISCORD_ADMIN_ROLE=RoleIDForServerAdmins
 SATISFACTORY_TOKEN='Satisfactory_server_API_token_with_admin_privileges'
 SATISFACTORY_HOST='satisfactory.example.com'
 SATISFACTORY_PORT=7777
