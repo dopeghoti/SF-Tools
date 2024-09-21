@@ -53,3 +53,25 @@ optional arguments:
 > $ python sfcheck.py 192.168.10.25 -p 7777
 34.12,3,365306
 ```
+
+== Rest Client CLI ==
+a quick and dirty client for interacting with the 1.0 REST API. 
+
+it does not currently implement everything in the api, but it's easy enough to add to
+
+```
+$ ./rest-client-cli.py --help
+Usage: rest-client-cli.py [OPTIONS]
+
+  CLI tool to authenticate and interact with the Satisfactory Dedicated Server
+  API.
+
+Options:
+  --host TEXT      host:port to connect to.  [default: localhost:7777]
+  --password TEXT  Password for server authentication.
+  --status         Display the server status.
+  --save TEXT      save game with name
+  --shutdown       shutdown the server
+  --help           Show this message and exit.
+```
+
