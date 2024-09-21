@@ -140,6 +140,27 @@ class API():
             udp_result = self.parseLightAPIResponse( udp_probe[0] )
             return udp_result
 
+    def shutdown_server( self, conf: ConfigManager ) -> int:
+        host = conf.get( 'SATISFACTORY_HOST' )
+        port = conf.get( 'SATISFACTORY_PORT' )
+        try:
+            # We don't care that we're almost definitely hitting a self-signed certificate
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+            r = requests.post (
+                f'https://{host}:{port}/api/v{self.currentRESTAPIVersion}',
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": f'Bearer { conf.get( "SATISFACTORY_TOKEN" )}',
+                },
+                json = {
+                    "function": "Shutdown",
+                },
+                verify = False # Assuming self-signed certificate
+            )
+            return r.status_code
+        except:
+            return -1
+
 def main() -> None:
     import sys
     try:
