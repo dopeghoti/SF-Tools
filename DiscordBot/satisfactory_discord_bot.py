@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import discord, asyncio
+from discord.ext import commands # type: ignore
 from discord.ext import tasks # type: ignore
-from discord.ext import commands
 from bot_config import ConfigManager
 import satisfactory
 
@@ -22,35 +22,36 @@ async def on_ready():
     repr( bot )
     sf_server_monitor.start()
 
-@tasks.loop( seconds = 15 )
+@tasks.loop( seconds = 5 )
 async def sf_server_monitor():
     global heart_beats
-    print( f'heartbeat: {heart_beats:4}' )
     heart_beats += 1
+    print( f'heartbeat: {heart_beats:4}' )
     udpstatus = sf.probe_udp( conf )
     server_state = sf.serverStates[udpstatus['ServerState']]
     print( f'\tUDP Probe complete.  {server_state=}' )
-    server_name = udpstatus['ServerName']
-    server_version = udpstatus['ServerNetCL']
+    #server_name = udpstatus['ServerName']
     if server_state != 'Offline':
         prefix_icon = '✅'
+        server_version = udpstatus['ServerNetCL']
     else:
         prefix_icon = '❌'
         server_version = '-server'
-    server_name = udpstatus['ServerName']
-    server_version = udpstatus['ServerNetCL']
     chan_id = conf.get( 'DISCORD_STATUS_CHANNEL' )
     channel = await bot.fetch_channel( chan_id )
     await channel.edit( name = f'{prefix_icon}SFv{server_version}-{server_state}' )
 
-@bot.slash_command( guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
-async def hello( ctx ):
-    await ctx.respond( 'Hello!' )
-
 @bot.slash_command( name="shutdown", description="Shut down the Satisfactory server",  guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
 @commands.has_role( conf.get( 'DISCORD_ADMIN_ROLE' ) )
 async def shutdownsfserver( ctx ):
-    await ctx.respond( f'This is not currently implemented.', ephemeral=True, delete_after = 5.0 )
+    response = sf.shutdown_server( conf )
+    if response != -1:
+        if response == 204:
+            await ctx.respond( f'Shutdown command has been sent to the server.', ephemeral=True, delete_after = 5.0 )
+        else:
+            await ctx.respond( f'Unexpected response code {response} received when trying to send shutdown command to the server.', ephemeral=True, delete_after = 5.0 )
+    else:
+        await ctx.respond( f'Something really odd happened shutting down the server.  No REST response?', ephemeral=True, delete_after = 5.0 )
 
 
 @bot.slash_command( name="setserveraddress", description="Set the hostname or IP address of the server",  guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
