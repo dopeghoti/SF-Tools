@@ -76,4 +76,10 @@ async def setserverport( ctx, port ):
         except:
             await ctx.respond( f'There was a problem setting the port to {port}.', ephemeral=True )
 
+@bot.slash_command( name="botstatus", description="How long has the bot been alive?", guild_ids = [ conf.get( 'DISCORD_GUILD') ] )
+@commands.has_role( conf.get( 'DISCORD_ADMIN_ROLE' ) )
+async def botstatus( ctx ):
+    global heart_beats
+    await ctx.respond( f'Bot has been alive for {heart_beats} cycle{"" if heart_beats == 1 else "s"}.', ephemeral=True, delete_after = 3.0 )
+
 bot.run( conf.get( 'DISCORD_TOKEN' ) )
