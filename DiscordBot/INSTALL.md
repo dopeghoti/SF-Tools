@@ -1,0 +1,39 @@
+ - Install Py-Cord library using the directions found [here](https://guide.pycord.dev/installation).
+ - Install Python dependencies: `pip3 install -U -r ../requirements.txt`
+ - Copy `dot_env.sample` to `.env`
+ - Enable Dev Mode in your Discord client
+ - Find your Discord Guild's ID, fill that in for `DISCORD_GUILD` in `.env`.
+ - Find your Status channel's ID, fill that in for `DISCORD_STATUS_CHANNEL` in `.env`.
+ - Find your Control channel's ID, fill that in for `DISCORD_CONTROL` in `.env`.
+ - In your Discord guild, create a Role that has the "Manage Channels" permission.
+ - Find the ID of that role, fill that in for `DISCORD_ADMIN_ROLE` in `.env`.
+ - Set up the Satisfactory configuration items:
+    - Using the Satisfactory server API documentation, create an API token.
+    - Fill that token in for `SATISFACTORY_TOKEN` in `.env`.
+    - Find your server's hostname or IP address.  Fill that in for `SATISFACTORY_HOST` in `.env`.
+    - Find your server's configured TCP/UDP port number.  Fill that in for `SATISFACTORY_PORT` in `.env`.
+    - If your server is using IPv6, fill `True` in for `SATISFACTORY_IPV6` in `.env`; otherwise fill `False` in.
+ - Set up Discord API connection:
+   - Go to https://discord.com/developers/applications [log in if needed]
+   - Click New Application
+   - Select a name for the Bot (this will be the Discord client "name" the bot logs in with) and proceed
+   - On the left, click Bot, and then 'Add Bot', and then 'Yes, do it!'.  The Bot now exists insofar as
+     Discord is concerned.
+   - Click Copy under the Token section, paste into `.env` for `DISCORD_TOKEN`
+ - Join the Bot to the Discord Guild: 
+   - Return to https://discord.com/developers/applications [log in if needed]; open the page for your Bot.
+   - On the left, under OAuth2, click 'URL Generator'
+   - For the Scope, select `bot`, and you will see a Bot Permission section appear.
+   - Scroll down and check the boxen for the following permissions:
+     - General Permissions
+       - Read Messages / View Channels
+     - Text Permissions
+       - Send Messages
+       - Manage Channels
+       - Read Message History
+       - Use Slash Commands
+   - Click Copy at the bottom of the page to copy the pre-prepared Bot Invite link.
+   - If it is your server go to it yourself and invite the bot.
+   - If it is not, give the link to the server owner.
+ - Ensure the bot has the correct permissions on the Monitor channel.
+ - Run the bot: `python3 ./satisfactory_discord_bot.py`.  If it works, run in `screen` or use `pm2` for uptime monitoring.
