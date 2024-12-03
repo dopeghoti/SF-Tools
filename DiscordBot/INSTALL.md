@@ -25,14 +25,14 @@
    - For the Scope, select `bot`, and you will see a Bot Permission section appear.
    - Scroll down and check the boxen for the following permissions:
      - General Permissions
+       - Manage Channels
        - Read Messages / View Channels
      - Text Permissions
        - Send Messages
-       - Manage Channels
        - Read Message History
        - Use Slash Commands
    - Click Copy at the bottom of the page to copy the pre-prepared Bot Invite link.
    - If it is your server go to it yourself and invite the bot.
    - If it is not, give the link to the server owner.
- - Ensure the bot has the correct permissions on the Monitor channel.
+ - Ensure the bot has the correct permissions on the Monitor channel and has the correct Role assigned.
  - Run the bot: `python3 ./satisfactory_discord_bot.py`.  If it works, run in `screen` or use `pm2` for uptime monitoring.
