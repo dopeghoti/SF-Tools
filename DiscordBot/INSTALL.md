@@ -4,7 +4,6 @@
  - Enable Dev Mode in your Discord client
  - Find your Discord Guild's ID, fill that in for `DISCORD_GUILD` in `.env`.
  - Find your Status channel's ID, fill that in for `DISCORD_STATUS_CHANNEL` in `.env`.
- - Find your Control channel's ID, fill that in for `DISCORD_CONTROL` in `.env`.
  - In your Discord guild, create a Role that has the "Manage Channels" permission.
  - Find the ID of that role, fill that in for `DISCORD_ADMIN_ROLE` in `.env`.
  - Set up the Satisfactory configuration items:
